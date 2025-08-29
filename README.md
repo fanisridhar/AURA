@@ -1,4 +1,4 @@
-# AURA - The Empathetic AI: A Multi-Agent System
+# AURA - The Empathetic AI: A Multi-Agent Systems
 
 
 ---

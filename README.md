@@ -3,6 +3,11 @@
 
 ---
 
+#For Video explaination and others 
+
+https://devpost.com/software/aura-the-empathetic-ai
+
+
 ## Abstract
 
 AURA is inspired by the film _Her_, where a man forms a deep emotional bond with an AI companion named Samantha. Drawing from this idea, AURA reimagines what it means for AI to be truly empathetic. It listens, understands, and responds to human emotions through a coordinated system of intelligent agents.

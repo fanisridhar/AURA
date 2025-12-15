@@ -32,12 +32,11 @@ class CuratorAgent:
         hf_token = os.getenv("HUGGINGFACE_TOKEN") or os.environ.get("HUGGINGFACE_TOKEN")
         try:
             if hf_token:
-                # Use a lighter model for zero-shot classification to save memory
+                # Standard zero-shot classifier; avoid options that require `accelerate`
                 self.classifier = pipeline(
                     "zero-shot-classification",
                     model="facebook/bart-large-mnli",
                     token=hf_token,
-                    model_kwargs={"low_cpu_mem_usage": True}
                 )
             else:
                 self.classifier = None

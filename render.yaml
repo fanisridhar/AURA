@@ -3,8 +3,8 @@ services:
     name: aura-backend
     env: python
     buildCommand: |
-      cd frontend && npm install && npm run build && cd ..
-      pip install -r backend/requirements.txt
+      pip install -r requirements.txt
+      cd frontend && npm install && npm run build
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: OPENAI_API_KEY

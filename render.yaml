@@ -2,6 +2,7 @@ services:
   - type: web
     name: aura-backend
     env: python
+    pythonVersion: "3.11"
     buildCommand: |
       pip install -r requirements.txt
       cd frontend && npm install && npm run build

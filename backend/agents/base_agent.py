@@ -10,7 +10,7 @@ class BaseAgent:
     def __init__(self):
         self.api_key = Config.OPENAI_API_KEY
         
-    async def _generate_with_openai(self, system, user, model="gpt-4", temperature=0.7, max_tokens=500):
+    async def _generate_with_openai(self, system, user, model="gpt-3.5-turbo", temperature=0.7, max_tokens=500):
         """Generate text using OpenAI API with proper error handling"""
         try:
             response = await openai.ChatCompletion.acreate(

@@ -4,24 +4,41 @@ from backend.config.config import Config
 import tempfile
 import os
 import time
-import pygame
+
+# Try to import pygame, but make it optional
+try:
+    import pygame
+    PYGAME_AVAILABLE = True
+except (ImportError, AttributeError) as e:
+    PYGAME_AVAILABLE = False
+    logging.warning(f"Pygame not available: {e}. Audio playback will be limited.")
 
 logger = logging.getLogger(__name__)
 
 class TTS:
     def __init__(self):
         if not Config.ELEVEN_LABS_API_KEY:
-            raise ValueError("Eleven Labs API key not configured")
+            logger.warning("Eleven Labs API key not configured. TTS will be unavailable.")
+            self.client = None
+            return
             
         self.client = ElevenLabs(api_key=Config.ELEVEN_LABS_API_KEY)
         self.voice_id = "Xb7hH8MSUJpSbSDYk0k2"  # Alice's voice ID
         self.temp_dir = tempfile.gettempdir()
         
-        # Initialize pygame mixer for audio playback
-        pygame.mixer.init()
+        # Initialize pygame mixer for audio playback if available
+        if PYGAME_AVAILABLE:
+            try:
+                pygame.mixer.init()
+            except Exception as e:
+                logger.warning(f"Failed to initialize pygame mixer: {e}")
     
     def speak(self, text: str, mood: str = None) -> bool:
         """Converts text to speech and plays it without opening external player"""
+        if not self.client:
+            logger.warning("TTS client not initialized. Cannot speak.")
+            return False
+            
         if not text or not isinstance(text, str):
             logger.error("Invalid text input for TTS")
             return False
@@ -58,24 +75,25 @@ class TTS:
                     if chunk:
                         f.write(chunk)
             
-            # Play audio with pygame
-            try:
-                pygame.mixer.music.load(temp_path)
-                pygame.mixer.music.play()
-                logger.info(f"TTS: Playing audio with voice={self.voice_id}, mood={mood}")
-                
-                # Wait for playback to finish
-                while pygame.mixer.music.get_busy():
-                    pygame.time.Clock().tick(10)
+            # Play audio with pygame if available
+            if PYGAME_AVAILABLE:
+                try:
+                    pygame.mixer.music.load(temp_path)
+                    pygame.mixer.music.play()
+                    logger.info(f"TTS: Playing audio with voice={self.voice_id}, mood={mood}")
                     
-            except Exception as audio_err:
-                logger.error(f"Audio playback error: {str(audio_err)}")
-                # Fall back to system player if pygame fails
-                if os.name == 'nt':  # Windows
-                    os.startfile(temp_path)
-                else:
-                    logger.error("Cannot play audio: pygame failed and system fallback not available")
-                
+                    # Wait for playback to finish
+                    while pygame.mixer.music.get_busy():
+                        pygame.time.Clock().tick(10)
+                        
+                except Exception as audio_err:
+                    logger.error(f"Audio playback error: {str(audio_err)}")
+                    # Fall back to system player if pygame fails
+                    self._fallback_play(temp_path)
+            else:
+                # Fall back to system player if pygame is not available
+                self._fallback_play(temp_path)
+    
             # Clean up temp file after playback
             try:
                 if os.path.exists(temp_path):
@@ -88,3 +106,16 @@ class TTS:
         except Exception as e:
             logger.error(f"TTS Error: {str(e)}")
             return False
+    
+    def _fallback_play(self, temp_path):
+        """Fallback method to play audio using system player"""
+        try:
+            if os.name == 'nt':  # Windows
+                os.startfile(temp_path)
+            elif os.name == 'posix':  # macOS/Linux
+                import subprocess
+                subprocess.run(['open', temp_path], check=False)  # macOS
+            else:
+                logger.warning("Cannot play audio: no suitable player available")
+        except Exception as e:
+            logger.error(f"Fallback audio playback failed: {str(e)}")

@@ -28,12 +28,21 @@ class CuratorAgent:
         self._configure_apis()
 
         # Set Hugging Face token for authentication
-                # Initialize the classifier with the token
-        self.classifier = pipeline(
-            "zero-shot-classification",
-            model="facebook/bart-large-mnli",
-            token=os.environ["HUGGINGFACE_TOKEN"]
-        )
+        # Initialize the classifier with the token if available
+        hf_token = os.getenv("HUGGINGFACE_TOKEN") or os.environ.get("HUGGINGFACE_TOKEN")
+        try:
+            if hf_token:
+                self.classifier = pipeline(
+                    "zero-shot-classification",
+                    model="facebook/bart-large-mnli",
+                    token=hf_token
+                )
+            else:
+                self.classifier = None
+                logger.warning("HUGGINGFACE_TOKEN not set. CuratorAgent will have limited functionality.")
+        except Exception as e:
+            logger.warning(f"Failed to initialize classifier: {e}. CuratorAgent will have limited functionality.")
+            self.classifier = None
 
         self.context_cache = {}
         logger.info("CuratorAgent initialized successfully")
@@ -42,12 +51,22 @@ class CuratorAgent:
         """Initialize API clients with proper error handling."""
         try:
             # OpenAI for search-query generation
-            self.client = AsyncOpenAI(api_key=Config.OPENAI_API_KEY)
+            if Config.OPENAI_API_KEY:
+                self.client = AsyncOpenAI(api_key=Config.OPENAI_API_KEY)
+            else:
+                self.client = None
+                logger.warning("OpenAI API key not configured. CuratorAgent will have limited functionality.")
             # Tavily for news search
-            self.tavily = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
+            tavily_key = os.getenv("TAVILY_API_KEY")
+            if tavily_key:
+                self.tavily = TavilyClient(api_key=tavily_key)
+            else:
+                self.tavily = None
+                logger.warning("TAVILY_API_KEY not configured. News search will be unavailable.")
         except Exception as e:
             logger.error(f"Client initialization failed: {str(e)}")
-            raise RuntimeError("API client initialization failed")
+            self.client = None
+            self.tavily = None
 
     def _configure_apis(self):
         """

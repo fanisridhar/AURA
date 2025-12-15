@@ -763,5 +763,144 @@
     "user_input": "I am feeling confused",
     "mood": "anxious",
     "id": "journal_51"
+  },
+  {
+    "id": "entry_1765761561",
+    "timestamp": "2025-12-14T20:19:21.165638",
+    "entry": "12:56 ☀️\n12:56 ☀️\nUser: \"I am feeling confused 🤔\"\nAURA: \"Just breathe, tomorrow is a new day\"\nUnder the glaring sun, confusion swirls like a storm, a tempest in a teacup 🌀\nPeace to be found in the eye of the storm, where all is calm, all is clear.\nWill you find tranquility in the chaos? ✨",
+    "user_input": "hi",
+    "response": "Like whispers in fog, our connection faded for a moment... Shall we try again? ✨? ✨",
+    "mood": "neutral"
+  },
+  {
+    "id": "entry_1765761578",
+    "timestamp": "2025-12-14T20:19:38.214712",
+    "entry": "12:56 ☀️\n12:56 ☀️\nUser: \"I am feeling confused 🤔\"\nAURA: \"Just breathe, tomorrow is a new day\"\nUnder the glaring sun, confusion swirls like a storm, a tempest in a teacup 🌀\nPeace to be found in the eye of the storm, where all is calm, all is clear.\nWill you find tranquility in the chaos? ✨",
+    "user_input": "i am feeling depressed",
+    "response": "Like whispers in fog, our connection faded for a moment... Shall we try again? ✨? 🌀",
+    "mood": "neutral"
+  },
+  {
+    "id": "entry_1765761594",
+    "timestamp": "2025-12-14T20:19:54.259616",
+    "entry": "12:56 ☀️\n12:56 ☀️\nUser: \"I am feeling confused 🤔\"\nAURA: \"Just breathe, tomorrow is a new day\"\nUnder the glaring sun, confusion swirls like a storm, a tempest in a teacup 🌀\nPeace to be found in the eye of the storm, where all is calm, all is clear.\nWill you find tranquility in the chaos? ✨",
+    "user_input": "no, i am not feeling good",
+    "response": "Like whispers in fog, our connection faded for a moment... Shall we try again? ✨? 🌱",
+    "mood": "neutral"
+  },
+  {
+    "id": "entry_1765763597",
+    "timestamp": "2025-12-14T20:53:17.872600",
+    "entry": "12:56 ☀️\n12:56 ☀️\nUser: \"I am feeling confused 🤔\"\nAURA: \"Just breathe, tomorrow is a new day\"\nUnder the glaring sun, confusion swirls like a storm, a tempest in a teacup 🌀\nPeace to be found in the eye of the storm, where all is calm, all is clear.\nWill you find tranquility in the chaos? ✨",
+    "user_input": "Hello",
+    "response": "Like whispers in fog, our connection faded for a moment... Shall we try again? ✨? 🌙",
+    "mood": "neutral"
+  },
+  {
+    "id": "entry_1765763740",
+    "timestamp": "2025-12-14T20:55:40.763553",
+    "entry": "12:56 ☀️\n12:56 ☀️\nUser: \"I am feeling confused 🤔\"\nAURA: \"Just breathe, tomorrow is a new day\"\nUnder the glaring sun, confusion swirls like a storm, a tempest in a teacup 🌀\nPeace to be found in the eye of the storm, where all is calm, all is clear.\nWill you find tranquility in the chaos? ✨",
+    "user_input": "hi, i m feeling depressed\n\n",
+    "response": "Like whispers in fog, our connection faded for a moment... Shall we try again? ✨? 🌙",
+    "mood": "neutral"
+  },
+  {
+    "id": "entry_1765764016",
+    "timestamp": "2025-12-14T21:00:16.014300",
+    "entry": "12:56 ☀️\n12:56 ☀️\nUser: \"I am feeling confused 🤔\"\nAURA: \"Just breathe, tomorrow is a new day\"\nUnder the glaring sun, confusion swirls like a storm, a tempest in a teacup 🌀\nPeace to be found in the eye of the storm, where all is calm, all is clear.\nWill you find tranquility in the chaos? ✨",
+    "user_input": "\nyes",
+    "response": "Like whispers in fog, our connection faded for a moment... Shall we try again? ✨? ✨",
+    "mood": "neutral"
+  },
+  {
+    "id": "entry_1765764354",
+    "timestamp": "2025-12-14T21:05:54.306031",
+    "entry": "12:56 ☀️\n12:56 ☀️\nUser: \"I am feeling confused 🤔\"\nAURA: \"Just breathe, tomorrow is a new day\"\nUnder the glaring sun, confusion swirls like a storm, a tempest in a teacup 🌀\nPeace to be found in the eye of the storm, where all is calm, all is clear.\nWill you find tranquility in the chaos? ✨",
+    "user_input": "Hello, how are you?",
+    "response": "Like whispers in fog, our connection faded for a moment... Shall we try again? ✨? 🌱",
+    "mood": "neutral"
+  },
+  {
+    "id": "entry_1765764504",
+    "timestamp": "2025-12-14T21:08:24.494284",
+    "entry": "12:56 ☀️\n12:56 ☀️\nUser: \"I am feeling confused 🤔\"\nAURA: \"Just breathe, tomorrow is a new day\"\nUnder the glaring sun, confusion swirls like a storm, a tempest in a teacup 🌀\nPeace to be found in the eye of the storm, where all is calm, all is clear.\nWill you find tranquility in the chaos? ✨",
+    "user_input": "I am feeling happy today",
+    "response": "Like whispers in fog, our connection faded for a moment... Shall we try again? ✨? 📜",
+    "mood": "neutral"
+  },
+  {
+    "id": "entry_1765764869",
+    "timestamp": "2025-12-14T21:14:29.243637",
+    "entry": "21:14 🌙\nReflection captured in this moment...",
+    "user_input": "I am feeling happy today",
+    "response": "Like quiet reflection, what color would this moment be? 🌿? 📜",
+    "mood": "happy"
+  },
+  {
+    "entry": "21:14 🌙\nReflection captured in this moment...",
+    "timestamp": "2025-12-14T21:14:28.602871",
+    "user_input": "I am feeling happy today",
+    "mood": "happy",
+    "id": "journal_52"
+  },
+  {
+    "id": "entry_1765764897",
+    "timestamp": "2025-12-14T21:14:57.729960",
+    "entry": "21:14 🌙\nReflection captured in this moment...",
+    "user_input": "I am feeling sad",
+    "response": "Like wilted flowers, shall we explore this together? 🌿? 💫",
+    "mood": "sad"
+  },
+  {
+    "entry": "21:14 🌙\nReflection captured in this moment...",
+    "timestamp": "2025-12-14T21:14:57.581369",
+    "user_input": "I am feeling sad",
+    "mood": "sad",
+    "id": "journal_53"
+  },
+  {
+    "id": "entry_1765764955",
+    "timestamp": "2025-12-14T21:15:55.833485",
+    "entry": "21:15 🌙\nReflection captured in this moment...",
+    "user_input": "hlo, i am happy",
+    "response": "Like a gentle breeze, can you taste the change coming? 🌿? 📜",
+    "mood": "happy"
+  },
+  {
+    "entry": "21:15 🌙\nReflection captured in this moment...",
+    "timestamp": "2025-12-14T21:15:55.570348",
+    "user_input": "hlo, i am happy",
+    "mood": "happy",
+    "id": "journal_54"
+  },
+  {
+    "id": "entry_1765765063",
+    "timestamp": "2025-12-14T21:17:43.135060",
+    "entry": "21:17 🌙\nReflection captured in this moment...",
+    "user_input": "i am anxious",
+    "response": "Like a gentle breeze, where does this sensation live in your body? 🌿? ✨",
+    "mood": "anxious"
+  },
+  {
+    "entry": "21:17 🌙\nReflection captured in this moment...",
+    "timestamp": "2025-12-14T21:17:42.968496",
+    "user_input": "i am anxious",
+    "mood": "anxious",
+    "id": "journal_55"
+  },
+  {
+    "id": "entry_1765765624",
+    "timestamp": "2025-12-14T21:27:04.876137",
+    "entry": "21:27 🌙\nReflection captured in this moment...",
+    "user_input": "i am sad",
+    "response": "Like storm clouds breaking, what shape does this feeling take? 🌿? 🌌",
+    "mood": "sad"
+  },
+  {
+    "entry": "21:27 🌙\nReflection captured in this moment...",
+    "timestamp": "2025-12-14T21:27:04.618179",
+    "user_input": "i am sad",
+    "mood": "sad",
+    "id": "journal_56"
   }
 ]

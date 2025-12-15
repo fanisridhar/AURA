@@ -24,7 +24,8 @@ export default function Journal() {
     // Separate function to handle the API call
     const getJournalEntries = async () => {
       try {
-        const response = await axios.get('/api/journal');
+        const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
+        const response = await axios.get(`${API_URL}/api/journal`);
         
         // Only update state if component is still mounted
         if (isMounted) {

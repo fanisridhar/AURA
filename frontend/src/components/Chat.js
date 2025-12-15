@@ -42,7 +42,8 @@ export default function Chat() {
     setInput("");
     
     try {
-      const response = await axios.post("http://localhost:8000/chat", { 
+      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
+      const response = await axios.post(`${API_URL}/chat`, { 
         user_input: input 
       });
       

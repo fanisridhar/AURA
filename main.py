@@ -29,8 +29,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve static files from the production build (your React app)
-app.mount("/static", StaticFiles(directory="frontend/build/static"), name="static")
+# Serve static files from the production build (your React app) - optional
+if os.path.exists("frontend/build/static"):
+    app.mount("/static", StaticFiles(directory="frontend/build/static"), name="static")
 
 @app.get("/favicon.ico")
 async def get_favicon():
@@ -247,7 +248,9 @@ async def spotify_auth():
     """
     state = secrets.token_hex(16)
     client_id = "6d8e3e5b5030499a8286bf020040678a"  # Your Spotify Client ID
-    redirect_uri = "http://localhost:8000/callback"  # Must match your Spotify settings
+    # Use environment variable for redirect URI in production
+    base_url = os.getenv("BASE_URL", "http://localhost:8000")
+    redirect_uri = f"{base_url}/callback"  # Must match your Spotify settings
     scope = "streaming user-read-playback-state user-modify-playback-state"
 
     auth_url = (
@@ -270,7 +273,8 @@ async def spotify_callback(code: str, state: str = None):
     """
     client_id = "6d8e3e5b5030499a8286bf020040678a"   # Your Spotify Client ID
     client_secret = "796f63ea240f4e8484f7a27cc32fd0f9"  # Your Spotify Client Secret
-    redirect_uri = "http://localhost:8000/callback"
+    base_url = os.getenv("BASE_URL", "http://localhost:8000")
+    redirect_uri = f"{base_url}/callback"
 
     auth_str = f"{client_id}:{client_secret}"
     b64_auth_str = base64.b64encode(auth_str.encode()).decode()
@@ -308,7 +312,9 @@ async def serve_app():
     """
     Serves the main React app from the build folder.
     """
-    return FileResponse("frontend/build/index.html")
+    if os.path.exists("frontend/build/index.html"):
+        return FileResponse("frontend/build/index.html")
+    return {"message": "Frontend not built. Please run 'npm run build' in the frontend directory."}
 
 @app.get("/{path:path}")
 async def catch_all(path: str):
@@ -318,7 +324,9 @@ async def catch_all(path: str):
     file_path = f"frontend/build/{path}"
     if os.path.exists(file_path):
         return FileResponse(file_path)
-    return FileResponse("frontend/build/index.html")
+    if os.path.exists("frontend/build/index.html"):
+        return FileResponse("frontend/build/index.html")
+    return {"message": "Frontend not built. Please run 'npm run build' in the frontend directory."}
 
 if __name__ == "__main__":
     import uvicorn

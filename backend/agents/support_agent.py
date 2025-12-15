@@ -8,7 +8,11 @@ logger = logging.getLogger(__name__)
 
 class SupportAgent:
     def __init__(self):
-        self.client = AsyncOpenAI(api_key=Config.OPENAI_API_KEY)
+        if Config.OPENAI_API_KEY:
+            self.client = AsyncOpenAI(api_key=Config.OPENAI_API_KEY)
+        else:
+            self.client = None
+            logger.warning("OpenAI API key not configured. SupportAgent will use fallback responses.")
         self._METAPHORS = {
             'lonely': ['an unplayed piano', 'empty concert hall', 'untouched canvas'],
             'sad': ['storm clouds breaking', 'wilted flowers', 'fading sunset'],
@@ -28,6 +32,10 @@ class SupportAgent:
         ]
 
     async def get_support_message(self, user_input: str, mood: str) -> str:
+        if not self.client:
+            # Fallback response when API key is not configured
+            return f"Like {random.choice(self._get_metaphors(mood).split(', '))}, {random.choice(self._PROACTIVE_QUESTIONS).lower()} 🌿"
+        
         try:
             # Developer override
             if "[raw_gpt]" in user_input:
@@ -54,7 +62,7 @@ class SupportAgent:
                 )
 
             response = await self.client.chat.completions.create(
-                model="gpt-4",
+                model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": system_content},
                     {"role": "user", "content": f"{user_input} [Mood: {mood}]"}
@@ -99,6 +107,15 @@ class SupportAgent:
 
 
 
+    def _get_metaphors(self, mood: str) -> str:
+        """Get metaphors for a given mood"""
+        mood_lower = mood.lower() if mood else 'neutral'
+        for key, metaphors in self._METAPHORS.items():
+            if key in mood_lower:
+                return ', '.join(metaphors)
+        # Default metaphors if mood not found
+        return 'a gentle breeze, morning light, quiet reflection'
+    
     def _clean_response(self, text: str) -> str:
         cleaned = text.replace("1.", "").replace("2.", "").replace("3.", "").replace("4.", "")
         cleaned = re.sub(r'\bTheodore\b', '', cleaned)
@@ -117,7 +134,7 @@ class SupportAgent:
         """Bypasses persona and sends prompt directly to GPT"""
         try:
             response = await self.client.chat.completions.create(
-                model="gpt-4",
+                model="gpt-3.5-turbo",
                 messages=[
                     {"role": "user", "content": user_input}
                 ],

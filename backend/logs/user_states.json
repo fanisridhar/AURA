@@ -1288,5 +1288,95 @@
     "user_input": "I am feeling confused",
     "mood": "anxious",
     "confidence": 0.95
+  },
+  {
+    "timestamp": "2025-12-14T20:19:13.861200",
+    "user_input": "hi",
+    "mood": "calm",
+    "confidence": 0.85
+  },
+  {
+    "timestamp": "2025-12-14T20:19:31.304167",
+    "user_input": "i am feeling depressed",
+    "mood": "sad",
+    "confidence": 0.95
+  },
+  {
+    "timestamp": "2025-12-14T20:19:47.942943",
+    "user_input": "no, i am not feeling good",
+    "mood": "sad",
+    "confidence": 0.4
+  },
+  {
+    "timestamp": "2025-12-14T20:49:28.288203",
+    "user_input": "test",
+    "mood": "calm",
+    "confidence": 0.7
+  },
+  {
+    "timestamp": "2025-12-14T20:52:53.395234",
+    "user_input": "Hello",
+    "mood": "calm",
+    "confidence": 0.85
+  },
+  {
+    "timestamp": "2025-12-14T20:54:49.751686",
+    "user_input": "hi, i m feeling depressed\n\n",
+    "mood": "sad",
+    "confidence": 0.95
+  },
+  {
+    "timestamp": "2025-12-14T20:59:54.863195",
+    "user_input": "\nyes",
+    "mood": "calm",
+    "confidence": 0.85
+  },
+  {
+    "timestamp": "2025-12-14T21:05:32.720015",
+    "user_input": "Hello, how are you?",
+    "mood": "calm",
+    "confidence": 0.4
+  },
+  {
+    "timestamp": "2025-12-14T21:08:05.951244",
+    "user_input": "I am feeling happy today",
+    "mood": "happy",
+    "confidence": 0.95
+  },
+  {
+    "timestamp": "2025-12-14T21:12:53.446712",
+    "user_input": "I am feeling happy",
+    "mood": "happy",
+    "confidence": 0.95
+  },
+  {
+    "timestamp": "2025-12-14T21:14:17.426911",
+    "user_input": "I am feeling happy today",
+    "mood": "happy",
+    "confidence": 0.95
+  },
+  {
+    "timestamp": "2025-12-14T21:14:43.856083",
+    "user_input": "I am feeling sad",
+    "mood": "sad",
+    "confidence": 0.95
+  },
+  {
+    "timestamp": "2025-12-14T21:15:37.095625",
+    "user_input": "hlo, i am happy",
+    "mood": "happy",
+    "confidence": 0.95
+  },
+  {
+    "timestamp": "2025-12-14T21:17:27.377861",
+    "user_input": "i am anxious",
+    "mood": "anxious",
+    "confidence": 0.95
+  },
+  {
+    "timestamp": "2025-12-14T21:26:45.130170",
+    "user_input": "i am sad",
+    "mood": "sad",
+    "confidence": 0.95
   }
 ]

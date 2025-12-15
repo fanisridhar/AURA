@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: aura-backend
+    env: python
+    buildCommand: |
+      cd frontend && npm install && npm run build && cd ..
+      pip install -r backend/requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: YOUTUBE_VIDEO_API_KEY
+        sync: false
+      - key: YOUTUBE_MUSIC_API_KEY
+        sync: false
+      - key: ELEVEN_LABS_API_KEY
+        sync: false
+      - key: SPOTIFY_CLIENT_ID
+        sync: false
+      - key: SPOTIFY_CLIENT_SECRET
+        sync: false
+      - key: HUGGINGFACE_TOKEN
+        sync: false
+      - key: PORT
+        value: 10000
+

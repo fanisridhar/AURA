@@ -105,7 +105,8 @@ export function AppProvider({ children }) {
   // Auth Methods
   const connectSpotify = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/spotify-auth");
+      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
+      const response = await axios.get(`${API_URL}/spotify-auth`);
       if (response.data && response.data.auth_url) {
         window.location.href = response.data.auth_url;
       }
@@ -326,7 +327,8 @@ export function AppProvider({ children }) {
   const clearAllHistory = async () => {
     if (window.confirm("Clear all conversation history and memory?")) {
       try {
-        await axios.post('http://localhost:8000/reset-memory');
+        const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
+        await axios.post(`${API_URL}/reset-memory`);
         clearHistory();
       } catch (error) {
         console.error("Error resetting memory:", error);

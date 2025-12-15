@@ -21,7 +21,7 @@ class AURAAgentCoordinator:
     def __init__(self, use_voice=False):
         self.llm_config = {
             "config_list": [{
-                "model": "gpt-4",
+                "model": "gpt-3.5-turbo",
                 "api_key": Config.OPENAI_API_KEY
             }],
             "temperature": 0.7
@@ -69,6 +69,14 @@ class AURAAgentCoordinator:
 
     async def process_message(self, user_input: str) -> Dict[str, Any]:
         """Processes user message with frontend JSON format compliance"""
+        # Initialize variables that need to persist even on errors
+        curated_content = {}
+        mood = "neutral"
+        confidence = 0.5
+        response_text = ""
+        current_journal = ""
+        enhanced_journal = ""
+        
         try:
             # 1. Emotion analysis with numerical confidence
             emotion = await self.emotion_analyzer.analyze(user_input)
@@ -78,31 +86,51 @@ class AURAAgentCoordinator:
             # 2. Store event with numerical confidence
             await self.memory_agent.store_event(user_input, mood, confidence)
 
-            # 3. Generate components
-            support_message = await self.support_agent.get_support_message(user_input, mood)
-            curated_content = await self.curator_agent.get_curated_content(user_input, mood)
+            # 3. Generate components - Get curated content FIRST and preserve it even if other steps fail
+            try:
+                curated_content = await self.curator_agent.get_curated_content(user_input, mood)
+                logger.info(f"Successfully fetched curated content: video={bool(curated_content.get('video'))}, music={bool(curated_content.get('music'))}")
+            except Exception as e:
+                logger.error(f"Curated content failed but continuing: {str(e)}")
+                curated_content = {}
+            
+            # Get support message
+            try:
+                support_message = await self.support_agent.get_support_message(user_input, mood)
+            except Exception as e:
+                logger.error(f"Support agent failed: {str(e)}")
+                support_message = f"Like whispers in fog, our connection faded for a moment... Shall we try again? ✨"
             
             # Get memory log and generate journal entry with modified JournalAgent
-            memory_log = await self.memory_agent.get_memory_log()
-            journal_entry = await self.journal_agent.generate_journal_entry(memory_log)
-            
-            # Apply light enhancement that preserves HER-style formatting
-            enhanced_journal = self._enhance_journal(journal_entry, mood)
-            
-            # Add new journal entry to persistent storage
-            self._add_journal_entry(enhanced_journal, user_input, mood)
+            try:
+                memory_log = await self.memory_agent.get_memory_log()
+                journal_entry = await self.journal_agent.generate_journal_entry(memory_log)
+                
+                # Apply light enhancement that preserves HER-style formatting
+                enhanced_journal = self._enhance_journal(journal_entry, mood)
+                
+                # Add new journal entry to persistent storage
+                self._add_journal_entry(enhanced_journal, user_input, mood)
+            except Exception as e:
+                logger.error(f"Journal generation failed: {str(e)}")
+                # Use fallback journal
+                enhanced_journal = f"{datetime.now().strftime('%H:%M')} 🌙\nReflection captured in this moment..."
+                self._add_journal_entry(enhanced_journal, user_input, mood)
 
             # Generate final response
-            final_response = self.fallback_agent.get_final_recommendation(
-                mood, support_message, enhanced_journal, curated_content
-            )
-            
-            # Extract text response for TTS and UI properly
-            response_text = ""
-            if isinstance(final_response, dict):
-                response_text = final_response.get("message", "")
-            else:
-                response_text = str(final_response)
+            try:
+                final_response = self.fallback_agent.get_final_recommendation(
+                    mood, support_message, enhanced_journal, curated_content
+                )
+                
+                # Extract text response for TTS and UI properly
+                if isinstance(final_response, dict):
+                    response_text = final_response.get("message", "")
+                else:
+                    response_text = str(final_response)
+            except Exception as e:
+                logger.error(f"Fallback agent failed: {str(e)}")
+                response_text = support_message if support_message else "Like whispers in fog, our connection faded for a moment... Shall we try again? ✨"
             
             # Log the extracted response for debugging
             logger.info(f"Extracted response text: {response_text[:100]}...")
@@ -118,12 +146,17 @@ class AURAAgentCoordinator:
             current_journal = self._get_most_recent_journal()
 
             # 5. Build frontend-compatible response with only current journal entry but full history for UI
+            # ALWAYS include curated_content even if other parts failed
             return {
                 "response_text": response_text,  # Include raw response text for message_handler.py
                 "response": response_text,
                 "mood": mood,
                 "confidence": confidence,
-                "content": self._structure_content(curated_content),
+                "content": self._structure_content(curated_content) if curated_content else {
+                    "video": {},
+                    "music": {},
+                    "news": []
+                },
                 "journal": current_journal,  # Only the most recent entry
                 "journal_entries": self.journal_entries,  # Full structured entries for UI
                 "journal_preview": enhanced_journal[:150] + "..." if len(enhanced_journal) > 150 else enhanced_journal,
@@ -131,7 +164,11 @@ class AURAAgentCoordinator:
             }
         except Exception as e:
             logger.error(f"Processing error: {str(e)}")
-            return self._fallback_response()
+            # Even in fallback, try to preserve any curated content we might have gotten
+            fallback = self._fallback_response()
+            if curated_content:
+                fallback["content"] = self._structure_content(curated_content)
+            return fallback
     
     def _add_journal_entry(self, entry: str, user_input: str, mood: str) -> None:
         """Add a new entry to the journal history"""

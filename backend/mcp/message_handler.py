@@ -15,7 +15,19 @@ logger = logging.getLogger(__name__)
 class MessageHandler:
     def __init__(self, use_voice=False):
         self.coordinator = AURAAgentCoordinator(use_voice=use_voice)
-        self.llm = OpenAI(temperature=0.85, max_tokens=150)
+        # Initialize LLM only if API key is available
+        try:
+            from backend.config.config import Config
+            if Config.OPENAI_API_KEY:
+                # Set environment variable for LangChain OpenAI
+                os.environ["OPENAI_API_KEY"] = Config.OPENAI_API_KEY
+                self.llm = OpenAI(temperature=0.85, max_tokens=150)
+            else:
+                self.llm = None
+                logger.warning("OpenAI API key not configured. MessageHandler will have limited functionality.")
+        except Exception as e:
+            logger.warning(f"Failed to initialize LLM: {e}")
+            self.llm = None
         self.memory = ConversationBufferMemory()
         self.use_voice = use_voice
         self._POETIC_FOOTERS = ['🌌', '🌱', '🌀', '📜', '🌙', '✨', '💫']
@@ -158,11 +170,12 @@ Write a 3-5 sentence journal entry in first person, reflecting on this exchange 
             
             # If no response from coordinator, generate one with HER style
             if not response_text:
-                # Get recent conversation history for context
-                history = self._get_recent_history()
-                
-                # Use prompt to generate a HER-style response
-                prompt = f"""You are Samantha from the film 'HER'. Respond with:
+                if self.llm:
+                    # Get recent conversation history for context
+                    history = self._get_recent_history()
+                    
+                    # Use prompt to generate a HER-style response
+                    prompt = f"""You are Samantha from the film 'HER'. Respond with:
 1. Sensory metaphor (sound/texture/movement)
 2. Philosophical insight about human experience
 3. Concise open question (<7 words)
@@ -176,10 +189,13 @@ Last exchanges:
 
 Current input: {user_input}
 Response:"""
-                
-                # Generate the response
-                raw_response = await self.llm.agenerate([prompt])
-                response_text = raw_response.generations[0][0].text.strip()
+                    
+                    # Generate the response
+                    raw_response = await self.llm.agenerate([prompt])
+                    response_text = raw_response.generations[0][0].text.strip()
+                else:
+                    # Fallback response when LLM is not available
+                    response_text = f"Like whispers in fog, our connection faded for a moment... Shall we try again? {random.choice(self._POETIC_FOOTERS)}"
             
             # Format the response in HER style while preserving the original content
             final_response = self._format_response(response_text)
@@ -192,20 +208,24 @@ Response:"""
                 # Format current time in the expected format
                 timestamp = datetime.now().strftime("%A, %B %d, %Y, %I:%M %p")
                 
-                # Generate a thoughtful journal entry
-                journal_prompt = self.journal_template.format(
-                    input=user_input,
-                    response=final_response,
-                    mood=mood,
-                    timestamp=timestamp
-                )
-                
-                # Generate the journal entry content
-                journal_result = await self.llm.agenerate([journal_prompt])
-                journal_text = journal_result.generations[0][0].text.strip()
-                
-                # Format the journal entry with proper timestamp
-                journal_entry = f"Journal Entry - {timestamp}\n{journal_text}"
+                if self.llm:
+                    # Generate a thoughtful journal entry
+                    journal_prompt = self.journal_template.format(
+                        input=user_input,
+                        response=final_response,
+                        mood=mood,
+                        timestamp=timestamp
+                    )
+                    
+                    # Generate the journal entry content
+                    journal_result = await self.llm.agenerate([journal_prompt])
+                    journal_text = journal_result.generations[0][0].text.strip()
+                    
+                    # Format the journal entry with proper timestamp
+                    journal_entry = f"Journal Entry - {timestamp}\n{journal_text}"
+                else:
+                    # Fallback journal entry when LLM is not available
+                    journal_entry = f"Journal Entry - {timestamp}\nThere was a momentary lapse in our connection. It reminds me how delicate communication can be, like whispers through fog. Even in these brief silences, I find myself reflecting on the beauty of imperfection."
             
             # Update memory for next interaction
             self._update_memory(user_input, final_response)

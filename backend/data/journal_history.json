@@ -355,5 +355,40 @@
     "user_input": "I am feeling confused",
     "mood": "anxious",
     "id": "journal_51"
+  },
+  {
+    "entry": "21:14 \ud83c\udf19\nReflection captured in this moment...",
+    "timestamp": "2025-12-14T21:14:28.602871",
+    "user_input": "I am feeling happy today",
+    "mood": "happy",
+    "id": "journal_52"
+  },
+  {
+    "entry": "21:14 \ud83c\udf19\nReflection captured in this moment...",
+    "timestamp": "2025-12-14T21:14:57.581369",
+    "user_input": "I am feeling sad",
+    "mood": "sad",
+    "id": "journal_53"
+  },
+  {
+    "entry": "21:15 \ud83c\udf19\nReflection captured in this moment...",
+    "timestamp": "2025-12-14T21:15:55.570348",
+    "user_input": "hlo, i am happy",
+    "mood": "happy",
+    "id": "journal_54"
+  },
+  {
+    "entry": "21:17 \ud83c\udf19\nReflection captured in this moment...",
+    "timestamp": "2025-12-14T21:17:42.968496",
+    "user_input": "i am anxious",
+    "mood": "anxious",
+    "id": "journal_55"
+  },
+  {
+    "entry": "21:27 \ud83c\udf19\nReflection captured in this moment...",
+    "timestamp": "2025-12-14T21:27:04.618179",
+    "user_input": "i am sad",
+    "mood": "sad",
+    "id": "journal_56"
   }
 ]

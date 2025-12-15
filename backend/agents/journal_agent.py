@@ -11,7 +11,11 @@ class JournalAgent(BaseAgent):
     
     def __init__(self):
         super().__init__()
-        self.client = AsyncOpenAI(api_key=Config.OPENAI_API_KEY)
+        if Config.OPENAI_API_KEY:
+            self.client = AsyncOpenAI(api_key=Config.OPENAI_API_KEY)
+        else:
+            self.client = None
+            logger.warning("OpenAI API key not configured. JournalAgent will use fallback entries.")
         self.symbol_cycle = ["🌀", "🌌", "✨", "🌠", "💭"]
         self.time_symbols = {
             "morning": "🌄",
@@ -97,8 +101,12 @@ class JournalAgent(BaseAgent):
 
     async def _get_llm_response(self, prompt):
         """Get structured journal content from LLM"""
+        if not self.client:
+            # Fallback journal entry when API key is not configured
+            return f"{datetime.now().strftime('%H:%M')} {self._get_time_symbol(datetime.now())}\nReflection captured in this moment... 🌌"
+        
         response = await self.client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-3.5-turbo",
             messages=[{
                 "role": "system",
                 "content": """You are a journal formatter. Create entries that:

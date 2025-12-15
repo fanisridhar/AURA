@@ -58,10 +58,10 @@ pydantic==2.11.2
 pydantic_core==2.33.1
 pydantic-settings==2.8.1
 pygame==2.6.1
-pypiwin32==223
+# pypiwin32==223  # Windows only
 python-dotenv==1.1.0
 pyttsx3==2.98
-pywin32==310
+# pywin32==310  # Windows only
 PyYAML==6.0.2
 rake-nltk==1.0.6
 regex==2024.11.6

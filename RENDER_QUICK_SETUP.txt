@@ -1,0 +1,42 @@
+╔══════════════════════════════════════════════════════════════╗
+║           RENDER DEPLOYMENT - QUICK SETUP GUIDE             ║
+╚══════════════════════════════════════════════════════════════╝
+
+📋 CONFIGURATION CHECKLIST:
+
+1. ROOT DIRECTORY:
+   ✅ Leave EMPTY (your repo root is correct)
+
+2. INSTANCE TYPE:
+   ⚠️  Free Plan: Works but spins down (slow first request)
+   ✅ Recommended: Starter ($7/month) - Always running, better performance
+
+3. ENVIRONMENT VARIABLES - Add these:
+   
+   OPENAI_API_KEY=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
+   TAVILY_API_KEY=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
+   YOUTUBE_VIDEO_API_KEY=AIzaSyAcROR1pGW7uiLPXPp9MqQ3D8PpsOsADQk
+   YOUTUBE_MUSIC_API_KEY=AIzaSyAcROR1pGW7uiLPXPp9MqQ3D8PpsOsADQk
+   ELEVEN_LABS_API_KEY=sk_86e091e039aed9867ea1f59b228c06ffa3a015ee82a6f5ce
+   SPOTIFY_CLIENT_ID=a18b55dfd80e4f5083c2b982ff7410a1
+   SPOTIFY_CLIENT_SECRET=05b284e28422487e9808960bd640bbd8
+   HUGGINGFACE_TOKEN=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
+   
+   ⚠️  AFTER DEPLOYMENT, add:
+   BASE_URL=https://your-app-name.onrender.com
+   REACT_APP_API_URL=https://your-app-name.onrender.com
+   PORT=10000
+
+4. PYTHON VERSION:
+   ✅ Make sure it's set to 3.11 (not 3.13!)
+
+5. BUILD & START COMMANDS:
+   ✅ Should auto-detect from render.yaml
+   Build: pip install -r requirements.txt && cd frontend && npm install && npm run build
+   Start: uvicorn main:app --host 0.0.0.0 --port $PORT
+
+6. AFTER DEPLOYMENT:
+   ✅ Update Spotify redirect URI to: https://your-app.onrender.com/callback
+
+🚀 Click "Deploy Web Service" when ready!
+

@@ -1,0 +1,44 @@
+╔══════════════════════════════════════════════════════════════╗
+║              MEMORY ISSUE - QUICK FIX GUIDE                  ║
+╚══════════════════════════════════════════════════════════════╝
+
+❌ ERROR: "Out of memory (used over 512Mi)"
+✅ SOLUTION: Upgrade instance type
+
+📊 MEMORY REQUIREMENTS:
+   - Base app: ~100 MB
+   - Transformers models: ~400-600 MB
+   - PyTorch: ~200-300 MB
+   - Total needed: ~800-1000 MB
+
+💡 RECOMMENDED ACTION:
+
+1. UPGRADE TO STANDARD PLAN ($25/month):
+   ✅ 2 GB RAM - Enough for all models
+   ✅ 1 CPU - Better performance
+   ✅ Always running
+   
+   This is the BEST solution for production.
+
+2. OR TRY STARTER PLAN ($7/month):
+   ⚠️  512 MB RAM - Still tight
+   ⚠️  May work with optimizations I added
+   ⚠️  If fails, upgrade to Standard
+
+3. CODE OPTIMIZATIONS APPLIED:
+   ✅ Lazy model loading (loads only when needed)
+   ✅ Memory-efficient model initialization
+   ✅ Fallback analysis if model fails
+
+🚀 STEPS TO FIX:
+
+1. Go to Render Dashboard
+2. Click on your service
+3. Go to Settings
+4. Change "Instance Type" to:
+   - Standard ($25/month) - RECOMMENDED
+   - Or Starter ($7/month) - Try first if budget is tight
+5. Save and redeploy
+
+✅ After upgrade, your app will have enough memory!
+
